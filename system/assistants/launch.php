@@ -1,5 +1,6 @@
 <?php
 	if ( defined( "AJAX" ) && AJAX == true ):
+		session_start();
 		define( "BASE_PATH", $_POST['system']['path'] . "assistants/" );
 		define( "SYSTEM" , $_POST['system']['path']  );
 		define( "SYSTEM_URL" , $_POST['system']['url']  );
@@ -14,8 +15,9 @@
 		$clerk= new Clerk( true );
 		$guard=	new Guard();
 		$manager= new Manager();
-
-		if ( !$guard->validate_user_extern( $clerk, $_COOKIE["secretary_username"], $_COOKIE["secretary_password"] ) )
+		
+		//get passwd and username from session not cookie - for security reasons
+		if ( !$guard->validate_user_extern( $clerk, $_SESSION["secretary_username"], $_SESSION["secretary_password"] ) )
 		{
 			die( "Back off!");
 		}
